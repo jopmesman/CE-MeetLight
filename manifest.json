@@ -1,0 +1,30 @@
+{
+  "manifest_version": 3,
+  "name": "MeetLight",
+  "version": "0.1.0",
+  "description": "Zet een Hue-lamp aan wanneer een Google Meet actief is en uit wanneer geen enkele Meet actief is.",
+  "permissions": [
+    "storage",
+    "tabs"
+  ],
+  "host_permissions": [
+    "https://meet.google.com/*",
+    "http://*/api/*",
+    "https://*/api/*"
+  ],
+  "background": {
+    "service_worker": "src/background.js",
+    "type": "module"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://meet.google.com/*"],
+      "js": ["src/content.js"],
+      "run_at": "document_idle"
+    }
+  ],
+  "options_page": "src/options.html",
+  "action": {
+    "default_title": "MeetLight"
+  }
+} 
