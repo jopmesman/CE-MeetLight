@@ -1,0 +1,52 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8" />
+	<title>MeetLight Opties</title>
+	<style>
+		body { font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; margin: 16px; }
+		label { display:block; margin-top: 12px; font-weight: 600; }
+		input { width: 320px; padding: 8px; }
+		button { margin-top: 16px; padding: 8px 12px; }
+		.small { color: #666; font-size: 12px; }
+	</style>
+</head>
+<body>
+	<h1>MeetLight instellingen</h1>
+	<label>
+		Hue Bridge IP-adres
+		<input id="hueBridgeIp" placeholder="192.168.1.2" />
+	</label>
+	<label>
+		Hue API username
+		<input id="hueUsername" placeholder="xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" />
+		<div class="small">Gebruik een bestaande API-gebruiker of maak er een aan via de Hue API.</div>
+	</label>
+	<label>
+		Lamp ID
+		<input id="hueLightId" placeholder="1" />
+	</label>
+	<button id="save">Opslaan</button>
+	<div id="status" class="small"></div>
+
+	<script>
+		function load() {
+			chrome.storage.sync.get({ hueBridgeIp: "", hueUsername: "", hueLightId: "" }, (items) => {
+				document.getElementById('hueBridgeIp').value = items.hueBridgeIp || '';
+				document.getElementById('hueUsername').value = items.hueUsername || '';
+				document.getElementById('hueLightId').value = items.hueLightId || '';
+			});
+		}
+		document.getElementById('save').addEventListener('click', () => {
+			const hueBridgeIp = document.getElementById('hueBridgeIp').value.trim();
+			const hueUsername = document.getElementById('hueUsername').value.trim();
+			const hueLightId = document.getElementById('hueLightId').value.trim();
+			chrome.storage.sync.set({ hueBridgeIp, hueUsername, hueLightId }, () => {
+				document.getElementById('status').textContent = 'Opgeslagen';
+				setTimeout(() => document.getElementById('status').textContent = '', 1500);
+			});
+		});
+		load();
+	</script>
+</body>
+</html> 
